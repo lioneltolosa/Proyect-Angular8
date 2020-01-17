@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, interval, throwError, of, Subscription, Subscriber } from 'rxjs';
-import { mergeMap, retry, map, filter } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscriber, Subscription } from 'rxjs';
+import { retry, map, filter } from 'rxjs/operators';
 
 @Component({
     selector: 'app-rxjs',
     templateUrl: './rxjs.component.html',
     styleUrls: ['./rxjs.component.scss']
 })
-export class RxjsComponent implements OnInit {
+export class RxjsComponent implements OnInit, OnDestroy {
+
+    subscripciion: Subscription;
 
     constructor() {
-        this.returnObservable()
+        this.subscripciion = this.returnObservable()
         
         /* .pipe(
             retry(2)
@@ -24,6 +26,11 @@ export class RxjsComponent implements OnInit {
     }
 
     ngOnInit() {
+    }
+
+    ngOnDestroy() {
+        console.log('La pagina se va a cerrar')
+        this.subscripciion.unsubscribe();
     }
 
     returnObservable(): Observable<any>{
