@@ -10,39 +10,7 @@ import { mergeMap, retry } from 'rxjs/operators';
 export class RxjsComponent implements OnInit {
 
     constructor() {
-        /* const source = interval(1000);
-        const example = source.pipe(
-            mergeMap(val => {
-                if(val > 5) {
-                    return throwError('Error')
-                }
-                return of(val)
-            }),
-            retry(2)
-        ); */
-
-        let obs = new Observable((observer) => {
-
-            let contador = 0;
-
-            let intervalo = setInterval(() => {
-                contador ++;
-                observer.next( contador );
-                // console.log('Contador Observable', contador)
-
-                if(contador === 3) {
-                    clearInterval(intervalo)
-                    observer.complete();
-                }
-
-                if(contador === 2) {
-                    // clearInterval(intervalo)
-                    observer.error('Help!!');
-                }
-            }, 1000)
-        });
-
-        obs.pipe(
+        this.returnObservable().pipe(
             retry(2)
         )
         .subscribe( 
@@ -52,9 +20,27 @@ export class RxjsComponent implements OnInit {
         );
     }
 
-
-
     ngOnInit() {
+    }
+
+    returnObservable(): Observable<number>{
+        return new Observable(observer => {
+            let contador = 0;
+            
+            let intervalo = setInterval(() => {
+                contador ++;
+                observer.next( contador );
+
+                if(contador === 3) {
+                    clearInterval(intervalo)
+                    observer.complete();
+                }
+
+                if(contador === 2) {
+                    observer.error('Help!!');
+                }
+            }, 1000)
+        });
     }
 
 }
