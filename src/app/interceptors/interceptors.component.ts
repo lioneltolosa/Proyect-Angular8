@@ -12,7 +12,7 @@ export class InterceptorsComponent implements OnInit {
         this.usersService.getUsers().subscribe(data => {
             console.log('Users', data)
         }, (err) => {
-            console.log('Error ??')
+            console.log('Error en el app component')
         })
     }
 
